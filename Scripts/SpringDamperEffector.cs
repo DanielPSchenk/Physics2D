@@ -9,8 +9,9 @@ public class SpringDamperEffector : Effector
 
     public PhysicsPart connectedPart;
 
-    public float relaxedDistance;
-    public float springConstant;
+    public float relaxedDistance = 1;
+    public float springConstant = 1;
+    public float dampingConstant = 10;
     
 
     private void Start()
@@ -18,22 +19,24 @@ public class SpringDamperEffector : Effector
         _parentPart = GetComponent<PhysicsPart>();
     }
 
-    public override void ApplyForce(Vector3[] stateVector, Vector3[] firstDerivativeVector,
+    public override void ApplyForce(Vector3[][] stateVector,
         Vector3[] secondDerivativeVector)
     {
-        Vector2 parentPosition = new Vector2(stateVector[_parentPart.id].x, stateVector[_parentPart.id].y);
-        Vector2 connectedPosition = new Vector2(stateVector[connectedPart.id].x, stateVector[connectedPart.id].y);
+        Vector2 parentPosition = new Vector2(stateVector[0][_parentPart.id].x, stateVector[0][_parentPart.id].y);
+        Vector2 connectedPosition = new Vector2(stateVector[0][connectedPart.id].x, stateVector[0][connectedPart.id].y);
 
         Vector2 toConnected = connectedPosition - parentPosition;
-
-
+        
         Vector2 direction = toConnected.normalized;
         Vector2 relaxedVector = relaxedDistance * direction;
         Vector2 forceVector = (toConnected - relaxedVector) * springConstant;
-        Vector3 forceVector3 = forceVector;
 
-        secondDerivativeVector[_parentPart.id] += forceVector3 / _parentPart.mass;
-        Debug.Log(parentPosition + " " + relaxedVector + " " + toConnected + " " + forceVector3 / _parentPart.mass + " " + (forceVector3 / _parentPart.mass).magnitude);
-        secondDerivativeVector[connectedPart.id] += forceVector3 / (-connectedPart.mass);
+        AddForce(_parentPart, forceVector, secondDerivativeVector);
+        AddForce(connectedPart, -forceVector, secondDerivativeVector);
+        
+        float relativeSpeed = Vector2.Dot(direction, (Vector2)stateVector[1][_parentPart.id]) + Vector2.Dot(-direction, (Vector2)stateVector[1][connectedPart.id]);
+        
+        AddForce(_parentPart, -direction * (relativeSpeed * dampingConstant), secondDerivativeVector);
+        AddForce(connectedPart, direction * (relativeSpeed * dampingConstant), secondDerivativeVector);
     }
 }
