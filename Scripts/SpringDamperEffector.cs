@@ -12,6 +12,7 @@ public class SpringDamperEffector : Effector
     public float relaxedDistance = 1;
     public float springConstant = 1;
     public float dampingConstant = 10;
+    public float tangentDamping = .1f;
     
 
     private void Start()
@@ -28,15 +29,20 @@ public class SpringDamperEffector : Effector
         Vector2 toConnected = connectedPosition - parentPosition;
         
         Vector2 direction = toConnected.normalized;
+        Vector2 tangent = new Vector2(-direction.y, direction.x);
         Vector2 relaxedVector = relaxedDistance * direction;
         Vector2 forceVector = (toConnected - relaxedVector) * springConstant;
-
         AddForce(_parentPart, forceVector, secondDerivativeVector);
         AddForce(connectedPart, -forceVector, secondDerivativeVector);
         
         float relativeSpeed = Vector2.Dot(direction, (Vector2)stateVector[1][_parentPart.id]) + Vector2.Dot(-direction, (Vector2)stateVector[1][connectedPart.id]);
+        float tangentSpeed = Vector2.Dot(tangent, stateVector[1][_parentPart.id]) +
+                             Vector2.Dot(-tangent, stateVector[1][connectedPart.id]);
         
         AddForce(_parentPart, -direction * (relativeSpeed * dampingConstant), secondDerivativeVector);
         AddForce(connectedPart, direction * (relativeSpeed * dampingConstant), secondDerivativeVector);
+        
+        AddForce(_parentPart, -tangent * (tangentSpeed * tangentDamping), secondDerivativeVector);
+        AddForce(connectedPart, tangent * (tangentSpeed * tangentDamping), secondDerivativeVector);
     }
 }

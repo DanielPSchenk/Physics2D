@@ -14,6 +14,9 @@ public class PhysicsManager : MonoBehaviour
     private List<PhysicsPart> _parts;
     private List<Effector> _effectors;
     private Vector3[][] _stateVector;
+    private bool _needsVectorSwapIn;
+
+    Vector3[][] t1, t2, s2, t3, s3, t4, s4;
     
 
     void CreatePartsVector()
@@ -28,14 +31,18 @@ public class PhysicsManager : MonoBehaviour
     }
     void Start()
     {
-        CreatePartsVector();
-        SwapInVector();
-        
-        
+        _needsVectorSwapIn = true;      
     }
 
     private void FixedUpdate()
     {
+        if (_needsVectorSwapIn)
+        {
+            CreatePartsVector();
+            SwapInVector();
+            AllocateAllVectors();
+            _needsVectorSwapIn = false;
+        }
         ApplyRungeKuttaStep(Time.fixedDeltaTime);
         SwapOutVector();
     }
@@ -53,9 +60,7 @@ public class PhysicsManager : MonoBehaviour
 
     private void SwapInVector()
     {
-        _stateVector = new Vector3[2][];
-        _stateVector[0] = new Vector3[_parts.Count()];
-        _stateVector[1] = new Vector3[_parts.Count()];
+        _stateVector = VectorAllocate();
         
         for (int i = 0; i < _parts.Count; i++)
         {
@@ -64,21 +69,39 @@ public class PhysicsManager : MonoBehaviour
         }
     }
 
+    private Vector3[][] VectorAllocate(){
+        Vector3[][] vec = new Vector3[2][];
+        vec[0] = new Vector3[_parts.Count];
+        vec[1] = new Vector3[_parts.Count];
+        return vec;
+    }
+
+    private void AllocateAllVectors()
+    {
+        t1 = VectorAllocate();
+        t2 = VectorAllocate();
+        t3 = VectorAllocate();
+        t4 = VectorAllocate();
+        
+        s2 = VectorAllocate();
+        s3 = VectorAllocate();
+        s4 = VectorAllocate();
+        
+    }
+
     private void ApplyGaussStep(float timeStep)
     {
-        Vector3[][] t1 = NewDerivativeVector(_stateVector);
-        _stateVector = StateAfterStep(_stateVector, t1, timeStep);
+        NewDerivativeVector(_stateVector, t1);
+        StateAfterStep(_stateVector, t1, timeStep, _stateVector);
 
     }
 
-    private Vector3[][] NewDerivativeVector(Vector3[][] stateVector)
+    private void NewDerivativeVector(Vector3[][] stateVector, Vector3[][] ret)
     {
-        Vector3[][] ret = new Vector3[2][];
-        ret[0] = new Vector3[_parts.Count()];
-        ret[1] = new Vector3[_parts.Count()];
         for (int i = 0; i < _parts.Count(); i++)
         {
             ret[0][i] = stateVector[1][i];
+            ret[1][i] = Vector3.zero;
         }
 
         foreach (var e in _effectors)
@@ -86,14 +109,11 @@ public class PhysicsManager : MonoBehaviour
             e.ApplyForce(stateVector, ret[1]);
         }
 
-        return ret;
+        
     }
 
-    private Vector3[][] StateAfterStep(Vector3[][] state, Vector3[][] step, float timeStep)
+    private void StateAfterStep(Vector3[][] state, Vector3[][] step, float timeStep, Vector3[][] ret)
     {
-        Vector3[][] ret = new Vector3[2][];
-        ret[0] = new Vector3[_parts.Count()];
-        ret[1] = new Vector3[_parts.Count()];
 
         for (int i = 0; i < _parts.Count; i++)
         {
@@ -109,28 +129,28 @@ public class PhysicsManager : MonoBehaviour
             }
         }
 
-        return ret;
+        
     }
 
     private void ApplyRungeKuttaStep(float timeStep)
     {
-        Vector3[][] t1 = NewDerivativeVector(_stateVector);
-        Vector3[][] s2 = StateAfterStep(_stateVector, t1, timeStep / 2);
-
-        Vector3[][] t2 = NewDerivativeVector(s2);
-        Vector3[][] s3 = StateAfterStep(_stateVector, t2, timeStep / 2);
-
-        Vector3[][] t3 = NewDerivativeVector(s3);
-        Vector3[][] s4 = StateAfterStep(_stateVector, t3, timeStep);
-
-        Vector3[][] t4 = NewDerivativeVector(s4);
         
+        NewDerivativeVector(_stateVector, t1);
+        StateAfterStep(_stateVector, t1, timeStep / 2, s2);
+
+        NewDerivativeVector(s2, t2);
+        StateAfterStep(_stateVector, t2, timeStep / 2, s3);
+
+        NewDerivativeVector(s3, t3);
+        StateAfterStep(_stateVector, t3, timeStep, s4);
+        NewDerivativeVector(s4, t4);
+
         //Debug.Log(_stateVector[1][0] + " " + s2[1][0] + " " + s3[1][0] + s4[1][0]);
 
-        _stateVector = StateAfterStep(_stateVector, t1, timeStep / 6);
-        _stateVector = StateAfterStep(_stateVector, t2, timeStep / 3);
-        _stateVector = StateAfterStep(_stateVector, t3, timeStep / 3);
-        _stateVector = StateAfterStep(_stateVector, t4, timeStep / 6);
+        StateAfterStep(_stateVector, t1, timeStep / 6, _stateVector);
+        StateAfterStep(_stateVector, t2, timeStep / 3, _stateVector);
+        StateAfterStep(_stateVector, t3, timeStep / 3, _stateVector);
+        StateAfterStep(_stateVector, t4, timeStep / 6, _stateVector);
     }
 
 }
