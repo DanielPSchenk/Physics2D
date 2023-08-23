@@ -17,6 +17,11 @@ public class PhysicsPart : MonoBehaviour
 
     private void Awake()
     {
+        SetPosition();
+    }
+
+    public void SetPosition()
+    {
         state.x = transform.position.x;
         state.y = transform.position.y;
     }

@@ -5,6 +5,12 @@ using UnityEngine;
 public abstract class Effector : MonoBehaviour
 {
     public abstract void ApplyForce(Vector3[][] stateVector, Vector3[] secondDerivativeVector);
+    
+    protected PhysicsPart parentPart;
+    private void Start()
+    {
+        parentPart = GetComponent<PhysicsPart>();
+    }
 
     protected void AddForce(PhysicsPart part, Vector2 force, Vector3[] secondDerivativeVector)
     {

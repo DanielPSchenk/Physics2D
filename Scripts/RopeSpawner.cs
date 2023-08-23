@@ -15,12 +15,13 @@ public class RopeSpawner : MonoBehaviour
     void Start()
     {
         PhysicsManager manager = Transform.FindObjectOfType<PhysicsManager>();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < length; i++)
         {
             SpringDamperEffector nPart = Instantiate(prefab);
-            nPart.transform.position = new Vector3(start.transform.position.x, start.transform.position.y - 1,
+            nPart.transform.position = new Vector3(start.transform.position.x + .2f, start.transform.position.y - 2,
                 start.transform.position.z);
             nPart.connectedPart = start.GetComponent<PhysicsPart>();
+            nPart.GetComponent<PhysicsPart>().SetPosition();
             start = nPart;
         }
     }
