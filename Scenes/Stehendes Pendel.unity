@@ -161,7 +161,7 @@ MonoBehaviour:
     type: 3}
   connectedPart: {fileID: 1008430869}
   relaxedDistance: 5
-  springConstant: 1000
+  springConstant: 10000
   dampingConstant: 10
   tangentDamping: 0.001
 --- !u!114 &343784598
@@ -412,6 +412,7 @@ GameObject:
   - component: {fileID: 1008430869}
   - component: {fileID: 1008430871}
   - component: {fileID: 1008430870}
+  - component: {fileID: 1008430876}
   m_Layer: 0
   m_Name: BaseSphere
   m_TagString: Untagged
@@ -448,8 +449,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58aa92aa349773438110e7e30508156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  b: {fileID: 0}
-  pendulum: {fileID: 0}
+  b: {fileID: 1008430869}
+  pendulum: {fileID: 343784599}
+  wOuter: 0
+  wInner: 0
+  dInner: 1
+  tInner: 0.1
+  dOuter: 1
+  tOuter: 1
+  kOuter: 0
+  kInner: 1
 --- !u!114 &1008430871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,6 +560,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1008430876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008430868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4e40cf854adf7479e37ff0ceec0534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kP: 40
+  kI: 1
+  kD: 1
 --- !u!1 &1603825041
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,7 +719,7 @@ Transform:
   m_GameObject: {fileID: 1603825041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

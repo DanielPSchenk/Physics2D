@@ -581,6 +581,7 @@ GameObject:
   - component: {fileID: 2084866547}
   - component: {fileID: 2084866546}
   - component: {fileID: 2084866548}
+  - component: {fileID: 2084866549}
   m_Layer: 0
   m_Name: MovingCube
   m_TagString: Untagged
@@ -600,6 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d10c2d953e867541bae39a83d8b888a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectorPrefab: {fileID: 0}
   connectedPart: {fileID: 322129102}
   relaxedDistance: 5
   springConstant: 1
@@ -764,6 +766,21 @@ MonoBehaviour:
   omega: 1
   amplitude: 2
   o: 1
+--- !u!114 &2084866549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084866538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bfbc9ed1c81b2b46809354f4c5b4236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start: {fileID: 2084866539}
+  prefab: {fileID: 2202755648483916742, guid: 78fc58dae639ffd4d89d791e859091e0, type: 3}
+  length: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

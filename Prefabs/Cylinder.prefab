@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d10c2d953e867541bae39a83d8b888a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectorPrefab: {fileID: 4593866155719641282, guid: 3aa8e12daa927374e8769ae13a3b87e9,
+    type: 3}
   connectedPart: {fileID: 0}
   relaxedDistance: 2
   springConstant: 1000

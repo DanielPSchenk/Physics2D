@@ -18,6 +18,8 @@ public class PendulumController : Effector
     {
         return x + x * x * x / 6;
     }
+
+    public float dInner, tInner, dOuter, tOuter, kOuter, kInner;
     
     public override void ApplyForce(UnityEngine.Vector3[][] stateVector, UnityEngine.Vector3[] secondDerivativeVector)
     {
@@ -27,7 +29,7 @@ public class PendulumController : Effector
         //IO-linearization control
         //outer controller
 
-        wInner = ((wOuter - .2f * stateVector[1][pendulum.id].x - 1f * stateVector[0][pendulum.id].x) / .01f / 5);
+        wInner = kOuter * ((wOuter - 1 * stateVector[0][pendulum.id].x - 2 * tOuter * dOuter * stateVector[1][pendulum.id].x) * 2 / 5 /(tOuter * tOuter));
 
         
 
@@ -38,7 +40,11 @@ public class PendulumController : Effector
         Vector2 tangent = new Vector2(direction.y, -direction.x);
         float phiDerivative = Vector2.Dot(tangent, relMov) / con.magnitude;
         float p = phi();
-        float u = (9.81f * 25 * Mathf.Sin(p) + 100f * phiDerivative + 2500f * p - wInner) / (2.5f * Mathf.Cos(p));
+        float divider = .5f / dInner / tInner;
+        float ypp = 9.81f / 5f * Mathf.Sin(p);
+        float yp = phiDerivative;
+        float y = p;
+        float u = kInner * (-wInner + ypp + 2* dInner * tInner * yp + p) / (2.5f * Mathf.Cos(p) * tInner * tInner );
         
         AddForce(b, new Vector2(u, 0), secondDerivativeVector);
     }
