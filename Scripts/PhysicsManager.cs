@@ -53,7 +53,6 @@ public class PhysicsManager : MonoBehaviour
     {
         for (int i = 0; i < _parts.Count; i++)
         {
-            if (_parts[i].constrained) continue;
             _parts[i].state = _stateVector[0][i];
             _parts[i].stateDerivative = _stateVector[1][i];
             _parts[i].ApplyUpdate();
@@ -122,16 +121,10 @@ public class PhysicsManager : MonoBehaviour
 
         for (int i = 0; i < _parts.Count; i++)
         {
-            if (!_parts[i].constrained)
-            {
+
                 ret[0][i] = state[0][i] + state[1][i] * timeStep;
                 ret[1][i] = state[1][i] + step[1][i] * timeStep;
-            }
-            else
-            {
-                ret[0][i] = state[0][i];
-                ret[1][i] = state[1][i];
-            }
+
         }
 
         

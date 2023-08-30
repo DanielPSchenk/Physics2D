@@ -13,8 +13,6 @@ public class PhysicsPart : MonoBehaviour
 
     public int id;
 
-    public bool constrained = false;
-
     private void Awake()
     {
         SetPosition();
