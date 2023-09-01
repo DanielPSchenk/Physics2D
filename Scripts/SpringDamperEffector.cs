@@ -20,14 +20,16 @@ public class SpringDamperEffector : Effector
     private void Awake()
     {
         connector = Instantiate(connectorPrefab);
+        SpriteRenderer sp = connector.GetComponent<SpriteRenderer>();
+        sp.size = new Vector2(relaxedDistance, .5f);
     }
 
     private void Update()
     {
         connector.transform.position = (connectedPart.transform.position + parentPart.transform.position) * .5f;
-        connector.transform.up = connectedPart.transform.position - parentPart.transform.position;
+        connector.transform.right = connectedPart.transform.position - parentPart.transform.position;
         Vector3 s = connector.transform.localScale;
-        s.y = (connectedPart.transform.position - parentPart.transform.position).magnitude / 2;
+        s.x = (connectedPart.transform.position - parentPart.transform.position).magnitude / relaxedDistance;
         connector.transform.localScale = s;
     }
 

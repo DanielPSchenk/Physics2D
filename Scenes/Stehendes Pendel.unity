@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d10c2d953e867541bae39a83d8b888a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectorPrefab: {fileID: 4593866155719641282, guid: 3aa8e12daa927374e8769ae13a3b87e9,
+  connectorPrefab: {fileID: 2246708478150301586, guid: 58fd17672b15d56469b46d6da4e07922,
     type: 3}
   connectedPart: {fileID: 1008430869}
   relaxedDistance: 5
@@ -192,7 +192,6 @@ MonoBehaviour:
   state: {x: 0, y: 0, z: 0}
   stateDerivative: {x: 0, y: 0, z: 0}
   id: 0
-  constrained: 0
 --- !u!135 &343784600
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -273,7 +272,7 @@ Transform:
   m_GameObject: {fileID: 343784596}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -436,7 +435,6 @@ MonoBehaviour:
   state: {x: 0, y: 0, z: 0}
   stateDerivative: {x: 0, y: 0, z: 0}
   id: 0
-  constrained: 0
 --- !u!114 &1008430870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +455,7 @@ MonoBehaviour:
   tInner: 0.1
   dOuter: 1
   tOuter: 1
-  kOuter: 0
+  kOuter: 0.5
   kInner: 1
 --- !u!114 &1008430871
 MonoBehaviour:
