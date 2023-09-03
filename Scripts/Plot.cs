@@ -59,6 +59,7 @@ public class Plot : MonoBehaviour
             
             start.x = start.x / canvas.rect.width;
             start.y = start.y / canvas.rect.height;
+            start = new Vector2(.5f, .5f) + start;
             
             Vector2 drawSize = new Vector2(rt.rect.width / canvas.rect.width, rt.rect.height / canvas.rect.height) * drawArea;
         
