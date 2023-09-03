@@ -9,6 +9,7 @@ public class PositionController : MonoBehaviour
     private PhysicsPart parent;
     private Pid r;
     private ExternalForceEffector actor;
+    public float e;
     
     private void Start()
     {
@@ -19,7 +20,7 @@ public class PositionController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float e = w - parent.state.x;
+        e = w - parent.state.x;
         actor.externalForce.x = r.NextU(e);
     }
 }

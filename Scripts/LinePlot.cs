@@ -74,14 +74,7 @@ public class LinePlot : MonoBehaviour
 
     public void setArea(Rect area)
     {
-        Debug.Log("setting area");
-        float viewHeight = Camera.main.orthographicSize * 2;
-        float viewWidth = Camera.main.aspect * Camera.main.orthographicSize * 2;
-        float worldSpaceWidth = viewWidth * area.width / 800;
-        float worldSpaceHeight = viewHeight * area.height / 300;
-
-        float viewStartX = -worldSpaceWidth * .5f;
-        float viewStartY = viewHeight * .5f - area.yMin / 600 - worldSpaceHeight;
-        this.area = new Rect(new Vector2(viewStartX, viewStartY), new Vector2(worldSpaceWidth, worldSpaceHeight));
+        //Debug.Log("setting area");
+        this.area = area;
     }
 }
